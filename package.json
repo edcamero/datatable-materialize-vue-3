@@ -1,6 +1,6 @@
 {
   "name": "data-table-vue-3",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Datatable for VueJS 3 with Materialize",
   "author": "Enyerson Camero <edcamero11@gmail.com>",
   "license": "MIT",
