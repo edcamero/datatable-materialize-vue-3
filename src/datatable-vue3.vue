@@ -1,9 +1,10 @@
 <script lang="ts">
-import { defineComponent } from "vue";
+import { defineComponent, PropType } from "vue";
 import "vue-skeletor/dist/vue-skeletor.css";
 import Fuse from "fuse.js";
 import locales, { IDataLanguage } from "./locales/locales";
 import { Skeletor } from "vue-skeletor";
+import M from "materialize-css";
 
 interface ISearchConfig {
   getFn: (obj: string, path: string) => string | readonly string[] | undefined;
@@ -19,6 +20,12 @@ interface IColumn {
   field: string;
   numeric: boolean;
   html: boolean;
+}
+
+interface ICustomButton {
+  hide?: boolean
+  icon?: string
+  onclick: ()=>void
 }
 
 interface IRow {
@@ -67,7 +74,7 @@ export default /*#__PURE__*/ defineComponent({
       default: true,
     },
     customButtons: {
-      type: Array,
+      type:  Array as PropType<Array<ICustomButton>> ,
       required: false,
       default: () => [],
     },
@@ -138,7 +145,7 @@ export default /*#__PURE__*/ defineComponent({
     },
   },
   computed: {
-    perPageOptions() {
+    perPageOptions(): number[] {
       let options = (Array.isArray(this.perPage) && this.perPage) || [
         10, 20, 30, 40, 50,
       ];
@@ -214,8 +221,10 @@ export default /*#__PURE__*/ defineComponent({
         );
       return paginatedRows;
     },
-    lang():IDataLanguage {
-      return this.locale in locales ? locales[(this.locale as keyof typeof locales)] : locales["en"];
+    lang(): IDataLanguage {
+      return this.locale in locales
+        ? locales[this.locale as keyof typeof locales]
+        : locales["en"];
     },
   },
   methods: {
@@ -399,6 +408,7 @@ export default /*#__PURE__*/ defineComponent({
     },
   },
   mounted() {
+     M.AutoInit();
     if (!(this.locale in locales))
       console.error(`vue-materialize-datable: Invalid locale '${this.locale}'`);
     this.sortColumn = this.initSortCol;
@@ -412,8 +422,8 @@ export default /*#__PURE__*/ defineComponent({
       <span class="table-title">{{ title }}</span>
       <div class="actions">
         <a
-          v-for="(button, index) in customButtons"
-          v-if="button.hide ? !button.hide : true"
+          v-for="(button, index) in customButtons as ICustomButton"
+          v-if="button?.hide ??true"
           :key="index"
           href="javascript:undefined"
           class="waves-effect btn-flat nopadding"
@@ -507,7 +517,7 @@ export default /*#__PURE__*/ defineComponent({
         <template v-if="rows.length === 0 && loadingAnimation === true">
           <tr v-for="n in currentPerPage === -1 ? 10 : currentPerPage" :key="n">
             <td :colspan="columns.length">
-              <tb-skeleton
+              <Skeletor
                 :height="15"
                 theme="opacity"
                 bg-color="#dcdbdc"

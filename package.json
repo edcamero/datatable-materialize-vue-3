@@ -23,7 +23,10 @@
   },
   "dependencies": {
     "@types/fuse": "^2.6.0",
+    "@types/jquery": "^3.5.14",
     "fuse.js": "^6.5.3",
+    "material-design-icons": "^3.0.1",
+    "materialize-css": "^1.0.0-rc.2",
     "tb-skeleton": "^0.3.6",
     "vue-skeletor": "^1.0.6"
   },
@@ -36,6 +39,7 @@
     "@rollup/plugin-commonjs": "^14.0.0",
     "@rollup/plugin-node-resolve": "^9.0.0",
     "@rollup/plugin-replace": "^2.4.2",
+    "@types/materialize-css": "^1.0.11",
     "@vue/cli-plugin-babel": "^4.5.13",
     "@vue/cli-plugin-typescript": "^4.5.13",
     "@vue/cli-service": "^4.5.13",
