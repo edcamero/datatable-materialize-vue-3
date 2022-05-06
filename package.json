@@ -5,6 +5,16 @@
   "author": "Enyerson Camero <edcamero11@gmail.com>",
   "license": "MIT",
   "private": false,
+  "keywords": [
+		"Vue 3",
+		"Datatable",
+		"Materialize",
+		"Table Component"
+	],
+  "repository": {
+		"type": "git",
+		"url": "git+:https://github.com/edcamero/datatable-materialize-vue-3.git"
+	},
   "main": "dist/datatable-vue3.ssr.js",
   "browser": "dist/datatable-vue3.esm.js",
   "module": "dist/datatable-vue3.esm.js",
