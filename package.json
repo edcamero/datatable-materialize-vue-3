@@ -15,6 +15,7 @@
 		"type": "git",
 		"url": "git+:https://github.com/edcamero/datatable-materialize-vue-3.git"
 	},
+  "homepage": "https://github.com/edcamero/datatable-materialize-vue-3",
   "main": "dist/datatable-vue3.ssr.js",
   "browser": "dist/datatable-vue3.esm.js",
   "module": "dist/datatable-vue3.esm.js",
