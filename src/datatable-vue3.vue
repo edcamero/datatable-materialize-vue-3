@@ -6,13 +6,6 @@ import locales, { IDataLanguage } from "./locales/locales";
 import { Skeletor } from "vue-skeletor";
 import M from "materialize-css";
 
-interface ISearchConfig {
-  getFn: (obj: string, path: string) => string | readonly string[] | undefined;
-  threshold: number;
-  distance: number;
-  keys: string[];
-}
-
 type SortType = "asc" | "desc";
 
 interface IColumn {
@@ -23,9 +16,9 @@ interface IColumn {
 }
 
 interface ICustomButton {
-  hide?: boolean
-  icon?: string
-  onclick: ()=>void
+  hide?: boolean;
+  icon?: string;
+  onclick: () => void;
 }
 
 interface IRow {
@@ -74,7 +67,7 @@ export default /*#__PURE__*/ defineComponent({
       default: true,
     },
     customButtons: {
-      type:  Array as PropType<Array<ICustomButton>> ,
+      type: Array as PropType<Array<ICustomButton>>,
       required: false,
       default: () => [],
     },
@@ -159,7 +152,8 @@ export default /*#__PURE__*/ defineComponent({
     },
     processedRows() {
       let computedRows = this.rows;
-      if (this.sortable !== false)
+      if (this.sortable !== false){
+      
         computedRows = computedRows.sort((x: any, y: any) => {
           if (!(this.columns as IColumn[])[this.sortColumn]) return 0;
           const cook = (x: any) => {
@@ -180,33 +174,30 @@ export default /*#__PURE__*/ defineComponent({
             (x < y ? -1 : x > y ? 1 : 0) * (this.sortType === "desc" ? -1 : 1)
           );
         });
+      }
+      console.log("processedRows");
       if (this.searching && !this.serverSearch && this.searchInput) {
-        const searchConfig: ISearchConfig = {
-          getFn: () => {
-            return "";
-          },
+        console.log("entrado a la busqueda1");
+        const searchConfig: Fuse.IFuseOptions<string> = {
           threshold: 0,
           distance: 0,
+          includeScore: true,
           keys: this.columns.map((c) => (c as IColumn).field),
         };
+        console.log("entrado a la busqueda2", searchConfig);
         // Enable searching of numbers (non-string)
         // Temporary fix of https://github.com/krisk/Fuse/issues/144
-        searchConfig.getFn = (obj: string, path: string) => {
-          const property = this.dig(obj, path) as
-            | string
-            | readonly string[]
-            | undefined;
-          if (Number.isInteger(property)) return JSON.stringify(property);
-          return property;
-        };
+
         if (this.exactSearch) {
           //return only exact matches
           (searchConfig.threshold = 0), (searchConfig.distance = 0);
         }
-        computedRows = new Fuse(
+        computedRows =  new Fuse(
           computedRows as readonly string[],
           searchConfig as Fuse.IFuseOptions<string>
-        ).search(this.searchInput);
+        ).search(this.searchInput).map((result: Fuse.FuseResult<string>)=>{
+          return result.item
+        })
       }
       return computedRows;
     },
@@ -408,7 +399,7 @@ export default /*#__PURE__*/ defineComponent({
     },
   },
   mounted() {
-     M.AutoInit();
+    M.AutoInit();
     if (!(this.locale in locales))
       console.error(`vue-materialize-datable: Invalid locale '${this.locale}'`);
     this.sortColumn = this.initSortCol;
@@ -423,7 +414,7 @@ export default /*#__PURE__*/ defineComponent({
       <div class="actions">
         <a
           v-for="(button, index) in customButtons as ICustomButton"
-          v-if="button?.hide ??true"
+          v-if="button?.hide ?? true"
           :key="index"
           href="javascript:undefined"
           class="waves-effect btn-flat nopadding"

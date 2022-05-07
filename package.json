@@ -38,7 +38,7 @@
   "dependencies": {
     "@types/fuse": "^2.6.0",
     "@types/jquery": "^3.5.14",
-    "fuse.js": "^6.5.3",
+    "fuse.js": "^6.6.1",
     "material-design-icons": "^3.0.1",
     "materialize-css": "^1.0.0-rc.2",
     "vue-skeletor": "^1.0.6"
